@@ -1,0 +1,20 @@
+[package]
+name = "cgc-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "cgc"
+path = "src/main.rs"
+
+[dependencies]
+cgc-core = { path = "../cgc-core" }
+cgc-parser = { path = "../cgc-parser" }
+cgc-reasoning = { path = "../cgc-reasoning" }
+clap = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tokio = { workspace = true }

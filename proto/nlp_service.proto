@@ -1,0 +1,93 @@
+// Protocol Buffer definition for NLP Service (optional)
+// Implements: Requirements 20.2
+
+syntax = "proto3";
+
+package nlp;
+
+// NLP service for natural language processing tasks
+service NlpService {
+  // Extract named entities from text
+  rpc ExtractEntities(ExtractEntitiesRequest) returns (ExtractEntitiesResponse);
+  
+  // Parse dependency structure
+  rpc ParseDependencies(ParseDependenciesRequest) returns (ParseDependenciesResponse);
+  
+  // Tokenize text
+  rpc Tokenize(TokenizeRequest) returns (TokenizeResponse);
+}
+
+// Request to extract named entities
+message ExtractEntitiesRequest {
+  // Text to analyze
+  string text = 1;
+}
+
+// Named entity
+message Entity {
+  // Entity text
+  string text = 1;
+  
+  // Entity type (PERSON, ORG, GPE, etc.)
+  string entity_type = 2;
+  
+  // Start position in text
+  int32 start = 3;
+  
+  // End position in text
+  int32 end = 4;
+}
+
+// Response containing extracted entities
+message ExtractEntitiesResponse {
+  // Extracted entities
+  repeated Entity entities = 1;
+}
+
+// Request to parse dependencies
+message ParseDependenciesRequest {
+  // Text to parse
+  string text = 1;
+}
+
+// Dependency relation
+message Dependency {
+  // Head token
+  string head = 1;
+  
+  // Dependent token
+  string dependent = 2;
+  
+  // Dependency relation type
+  string relation = 3;
+}
+
+// Response containing dependency parse
+message ParseDependenciesResponse {
+  // Dependency relations
+  repeated Dependency dependencies = 1;
+}
+
+// Request to tokenize text
+message TokenizeRequest {
+  // Text to tokenize
+  string text = 1;
+}
+
+// Token
+message Token {
+  // Token text
+  string text = 1;
+  
+  // Part-of-speech tag
+  string pos = 2;
+  
+  // Lemma (base form)
+  string lemma = 3;
+}
+
+// Response containing tokens
+message TokenizeResponse {
+  // Tokens
+  repeated Token tokens = 1;
+}

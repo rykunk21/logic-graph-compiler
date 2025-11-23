@@ -1,0 +1,20 @@
+# Tarpaulin configuration for code coverage
+# Implements: Requirements 42.1, 42.2, 42.3, 42.4
+
+[report]
+out = ["Html", "Xml", "Lcov"]
+
+[coverage]
+# Exclude test files from coverage
+exclude-files = [
+    "*/tests/*",
+    "*/examples/*",
+    "*/target/*",
+]
+
+[thresholds]
+# Overall coverage threshold: ≥80%
+line = 80
+
+# Branch coverage threshold
+branch = 75

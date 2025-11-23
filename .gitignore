@@ -1,0 +1,54 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Model cache
+services/embedding-service/models/
+*.bin
+*.onnx
+
+# Local data
+data/
+*.db
+*.sqlite
+
+# Coverage
+tarpaulin-report.html
+cobertura.xml
+lcov.info
+
+# Generated files
+proto/generated/

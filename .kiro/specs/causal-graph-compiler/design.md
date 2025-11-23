@@ -63,6 +63,189 @@ The Causal Graph Compiler transforms natural-language engineering requirements i
 
 
 
+## Monorepo Structure and Workspace Dependencies
+
+The project is organized as a Cargo workspace monorepo with shared dependencies defined at the workspace level.
+
+### Directory Structure
+
+```
+causal-graph-compiler/
+├── Cargo.toml                 # Workspace root with [workspace.dependencies]
+├── .gitignore
+├── docker-compose.yml
+│
+├── crates/                    # Rust packages
+│   ├── cgc-core/             # Core graph engine
+│   │   ├── Cargo.toml        # References workspace dependencies
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       ├── graph.rs
+│   │       ├── embedding.rs
+│   │       ├── consistency.rs
+│   │       └── refinement.rs
+│   │
+│   ├── cgc-parser/           # Requirements parser
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       ├── keywords.rs
+│   │       ├── extractor.rs
+│   │       └── decomposition.rs
+│   │
+│   ├── cgc-reasoning/        # Reasoning engine
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       ├── inference.rs
+│   │       ├── test_gen.rs
+│   │       ├── query.rs
+│   │       └── exploration.rs
+│   │
+│   ├── cgc-cli/              # CLI application
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       └── main.rs
+│   │
+│   └── cgc-web/              # Web server
+│       ├── Cargo.toml
+│       └── src/
+│           ├── lib.rs
+│           ├── routes.rs
+│           ├── ws.rs
+│           └── static_files.rs
+│
+├── services/                  # Python services
+│   ├── embedding-service/
+│   │   ├── server.py
+│   │   ├── requirements.txt
+│   │   └── Dockerfile
+│   │
+│   └── nlp-service/
+│       ├── server.py
+│       ├── requirements.txt
+│       └── Dockerfile
+│
+├── proto/                     # Protocol Buffer definitions
+│   ├── embedding_service.proto
+│   └── nlp_service.proto
+│
+├── tests/                     # Integration tests
+│   ├── integration/
+│   ├── property/
+│   └── fixtures/
+│
+└── installer/                 # OS-specific installers
+    ├── linux/install.sh
+    ├── windows/install.ps1
+    └── macos/install.sh
+```
+
+### Workspace Dependency Pattern
+
+**Root Cargo.toml** defines shared dependencies:
+
+```toml
+[workspace]
+resolver = "2"
+members = [
+    "crates/cgc-core",
+    "crates/cgc-parser",
+    "crates/cgc-reasoning",
+    "crates/cgc-cli",
+    "crates/cgc-web",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Causal Graph Compiler Contributors"]
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Graph structures
+petgraph = "0.6"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# gRPC and Protocol Buffers
+tonic = "0.11"
+prost = "0.12"
+
+# CLI
+clap = { version = "4.0", features = ["derive"] }
+
+# Web framework
+axum = "0.7"
+
+# UUID and time
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Testing
+proptest = "1.0"
+criterion = "0.5"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+```
+
+**Member crate Cargo.toml** references workspace dependencies:
+
+```toml
+[package]
+name = "cgc-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Reference workspace dependencies
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
+```
+
+**Key Benefits:**
+1. **Single source of truth**: All dependency versions defined in one place
+2. **Consistent versions**: All crates use the same version of each dependency
+3. **Easy updates**: Update dependency version once in root Cargo.toml
+4. **Reduced duplication**: No need to repeat version numbers in each crate
+5. **Workspace metadata**: Shared package metadata (version, authors, license)
+
+**Inter-crate Dependencies:**
+
+```toml
+# cgc-parser depends on cgc-core
+[dependencies]
+cgc-core = { path = "../cgc-core" }
+
+# cgc-cli depends on all library crates
+[dependencies]
+cgc-core = { path = "../cgc-core" }
+cgc-parser = { path = "../cgc-parser" }
+cgc-reasoning = { path = "../cgc-reasoning" }
+```
+
+This pattern ensures type safety and code reuse across the monorepo while maintaining clear module boundaries.
+
 ## Data Models
 
 ### Node: Semantic Region with Centroid

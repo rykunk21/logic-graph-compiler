@@ -1,0 +1,61 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/cgc-core",
+    "crates/cgc-parser",
+    "crates/cgc-reasoning",
+    "crates/cgc-cli",
+    "crates/cgc-web",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Causal Graph Compiler Contributors"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yourusername/causal-graph-compiler"
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Graph structures
+petgraph = "0.6"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# gRPC and Protocol Buffers
+tonic = "0.11"
+prost = "0.12"
+tonic-build = "0.11"
+
+# CLI
+clap = { version = "4.0", features = ["derive"] }
+
+# Web framework
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "trace"] }
+
+# UUID generation
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Testing
+proptest = "1.0"
+criterion = "0.5"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# CSV parsing
+csv = "1.3"

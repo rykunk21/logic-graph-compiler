@@ -1,0 +1,14 @@
+# Proptest configuration for property-based testing
+# Implements: Requirements 35, Design doc testing strategy
+
+# Run each property test 100 times minimum
+cases = 100
+
+# Timeout per test case (milliseconds)
+timeout = 5000
+
+# Maximum shrink iterations when a test fails
+max_shrink_iters = 1000
+
+# Maximum size of generated collections
+max_flat_map_regens = 1000000

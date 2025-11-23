@@ -11,14 +11,19 @@
   - Include links to requirements and design documents
   - _Requirements: 24.1, 24.2, 24.3, 41.1_
 
-- [ ] 2. Set up monorepo structure with Cargo workspace
-  - Create root Cargo.toml with workspace configuration
-  - Set up directory structure: crates/, services/, proto/, tests/, installer/
-  - Configure shared dependencies at workspace level
+- [x] 2. Set up monorepo structure with Cargo workspace
+  - Create root Cargo.toml with [workspace] and [workspace.dependencies] sections
+  - Define workspace members: cgc-core, cgc-parser, cgc-reasoning, cgc-cli, cgc-web
+  - Configure shared dependencies at workspace level (serde, tokio, tonic, etc.)
+  - Set up [workspace.package] for shared metadata (version, edition, authors, license)
+  - Create directory structure: crates/, services/, proto/, tests/, installer/
+  - Create Cargo.toml for each member crate referencing workspace dependencies with { workspace = true }
+  - Set up inter-crate dependencies using path references (e.g., cgc-core = { path = "../cgc-core" })
   - Add .gitignore for Rust and Docker artifacts
+  - Create placeholder lib.rs files with module structure and documentation
   - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5_
 
-- [ ] 3. Establish TDD workflow and test infrastructure
+- [x] 3. Establish TDD workflow and test infrastructure
   - Document TDD process: write tests first (red), implement (green), refactor
   - Set up test organization: tests/ for integration, unit tests in crates, property tests
   - Configure proptest with minimum 100 iterations per property test
@@ -28,7 +33,7 @@
   - Document requirement completion criteria: all AC tests pass, coverage meets threshold
   - _Requirements: 35.1, 35.2, 35.3, 35.4, 35.5, 36.2, 36.5, 37.2, 37.5, 38.1, 38.2, 38.3, 38.4, 38.5, 42.1, 42.2, 42.3, 42.4, 42.5_
 
-- [ ] 4. Define Protocol Buffer schemas for inter-service communication
+- [x] 4. Define Protocol Buffer schemas for inter-service communication
   - Create proto/embedding_service.proto with Embed, BatchEmbed, FindSimilar RPCs
   - Create proto/nlp_service.proto for NLP operations
   - Define message types with proper field types and validation

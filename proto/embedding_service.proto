@@ -1,0 +1,75 @@
+// Protocol Buffer definition for Embedding Service
+// Implements: Requirements 20.3, 20.4, 20.5
+
+syntax = "proto3";
+
+package embedding;
+
+// Embedding service for generating semantic embeddings
+service EmbeddingService {
+  // Generate embedding for a single text
+  rpc Embed(EmbedRequest) returns (EmbedResponse);
+  
+  // Generate embeddings for multiple texts (batch processing)
+  rpc BatchEmbed(BatchEmbedRequest) returns (BatchEmbedResponse);
+  
+  // Find similar embeddings using HNSW index
+  rpc FindSimilar(FindSimilarRequest) returns (FindSimilarResponse);
+}
+
+// Request to embed a single text
+message EmbedRequest {
+  // Text to embed
+  string text = 1;
+}
+
+// Response containing the embedding vector
+message EmbedResponse {
+  // Embedding vector (384-dim for all-MiniLM-L6-v2)
+  repeated float embedding = 1;
+  
+  // Dimension of the embedding
+  int32 dimension = 2;
+}
+
+// Request to embed multiple texts
+message BatchEmbedRequest {
+  // Texts to embed
+  repeated string texts = 1;
+}
+
+// Response containing multiple embeddings
+message BatchEmbedResponse {
+  // Embeddings for each text
+  repeated EmbedResponse embeddings = 1;
+}
+
+// Request to find similar embeddings
+message FindSimilarRequest {
+  // Query embedding vector
+  repeated float embedding = 1;
+  
+  // Similarity threshold (default: 0.85)
+  float threshold = 2;
+  
+  // Maximum number of results to return
+  int32 max_results = 3;
+}
+
+// Similar embedding result
+message SimilarEmbedding {
+  // Node ID that this embedding belongs to
+  string node_id = 1;
+  
+  // Similarity score (cosine similarity)
+  float similarity = 2;
+  
+  // The similar embedding vector
+  repeated float embedding = 3;
+}
+
+// Response containing similar embeddings
+message FindSimilarResponse {
+  // Similar embeddings found
+  repeated SimilarEmbedding results = 1;
+}
