@@ -6,10 +6,10 @@
 pub struct SemanticRefinementEngine {
     /// Variance threshold for flagging nodes for review
     review_threshold: f32,
-    
+
     /// Maximum variance before rejecting merge
     max_variance_threshold: f32,
-    
+
     /// Similarity threshold for node aggregation
     aggregation_threshold: f32,
 }
@@ -23,17 +23,17 @@ impl SemanticRefinementEngine {
             aggregation_threshold: 0.90,
         }
     }
-    
+
     /// Get the review threshold
     pub fn review_threshold(&self) -> f32 {
         self.review_threshold
     }
-    
+
     /// Get the maximum variance threshold
     pub fn max_variance_threshold(&self) -> f32 {
         self.max_variance_threshold
     }
-    
+
     /// Get the aggregation threshold
     pub fn aggregation_threshold(&self) -> f32 {
         self.aggregation_threshold

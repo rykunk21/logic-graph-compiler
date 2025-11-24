@@ -88,11 +88,19 @@ fn main() -> anyhow::Result<()> {
             println!("Validate: {}", graph);
             // TODO: Implement validate
         }
-        Commands::TestGen { graph, edge_id, output } => {
+        Commands::TestGen {
+            graph,
+            edge_id,
+            output,
+        } => {
             println!("TestGen: {} edge {} -> {:?}", graph, edge_id, output);
             // TODO: Implement test generation
         }
-        Commands::Export { graph, format, output } => {
+        Commands::Export {
+            graph,
+            format,
+            output,
+        } => {
             println!("Export: {} as {} -> {:?}", graph, format, output);
             // TODO: Implement export
         }
